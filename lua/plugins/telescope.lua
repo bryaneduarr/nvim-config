@@ -1,9 +1,58 @@
 return {
   "nvim-telescope/telescope.nvim",
   tag = "0.1.6",
-  dependencies = { "nvim-lua/plenary.nvim" },
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    "nvim-tree/nvim-web-devicons",
+  },
   config = function()
-    require("telescope").setup()
+    local telescope = require("telescope")
+    local actions = require("telescope.actions")
+    local transform_mod = require("telescope.actions.mt").transform_mod
+
+    local trouble = require("trouble")
+    local trouble_telescope = require("trouble.sources.telescope")
+
+    telescope.setup({
+      -- ignore folders/files
+      pickers = {
+        live_grep = {
+          vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--ignore",
+            "--hidden",
+            "-g",
+            "!.git/",
+            "-g",
+            "!node_modules/",
+            "-g",
+            "!package-lock.json",
+          },
+        },
+      },
+    })
+
+    telescope.setup({
+      defaults = {
+        path_display = { "smart" },
+        mappings = {
+          i = {
+            ["<C-k>"] = actions.move_selection_previous, -- move to prev result
+            ["<C-j>"] = actions.move_selection_next,     -- move to next result
+            ["<C-t>"] = trouble_telescope.open,
+          },
+        },
+      },
+    })
+
+    telescope.load_extension("fzf")
 
     -- set keymaps
     local keymap = vim.keymap

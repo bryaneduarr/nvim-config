@@ -24,6 +24,13 @@ return {
       ["g\\"] = "actions.toggle_trash",
     },
     use_default_keymaps = false,
+    view_options = {
+      show_hidden = true,
+      -- This function defines what is considered a "hidden" file
+      is_hidden_file = function(name, bufnr)
+        return vim.startswith(name, ".")
+      end,
+    },
   },
   -- Optional dependencies
   dependencies = { "nvim-tree/nvim-web-devicons" },

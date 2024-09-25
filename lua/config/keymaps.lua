@@ -13,6 +13,9 @@ vim.keymap.set("n", "<leader>q", ":q<CR>", {})
 -- close current buffer/tab
 vim.keymap.set("n", "<leader>bq", ":bp<bar>sp<bar>bn<bar>bd<CR>", { desc = "Close current buffer/tab" })
 
+-- close all buffers/tab
+vim.keymap.set("n", "<leader>baq", ":w | %bd | e#", { desc = "Close all buffers/tab" })
+
 -- save  file
 vim.keymap.set("n", "<leader>w", "<CMD>update<CR>", { silent = true })
 
